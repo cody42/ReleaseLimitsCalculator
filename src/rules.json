@@ -1,0 +1,35 @@
+[
+{
+	"name": "F A O",
+	"outputs": [
+		{"title": "- FAO", "offset": -1},
+		{"title": "-1/2 FAO", "offset": -0.5},
+		{"title": "Declared", "offset": 0},
+		{"title": "+ FAO", "offset": 1}
+	],
+	"limits": [
+		{"lte": 25, "percent": 15, "homogenous": true},
+		{"lte": 25, "percent": 25, "heterogenous": true},
+		{"lte": 100, "percent": 10},
+		{"lte": 250, "percent": 6},
+		{"lte": 500, "percent": 5},
+		{"absolute": 25}
+	],
+	"info": "FAO Tolerance (g/l or g/kg at 20%2C):\n\t0-25 \t\t%1 15% (homogenous)\n\t0-25 \t\t%1 25% (heterogenous)\n\t>25-100 \t%1 10%\n\t>100-250 \t%1 6%\n\t>250-500 \t%1 5%\n\t>500 \t\t%1 25 g/l (or g/kg)\n"
+
+},
+{
+	"name": "E P A",
+	"outputs": [
+		{"title": "- EPA", "offset": -1},
+		{"title": "Declared", "offset": 0},
+		{"title": "+ EPA", "offset": 1}
+	],
+	"limits": [
+		{"lte": 10, "percent": 10},
+		{"lte": 200, "percent": 5},
+		{"percent": 3}
+	],
+	"info": "EPA Tolerance (% w/w at 20%2C):\n\t0-1% \t\t%1 10%\n\t>1-20% \t%1 5%\n\t>20% \t\t%1 3%\n"
+}
+]
