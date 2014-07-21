@@ -6,7 +6,8 @@ RESOURCES += \
 SOURCES += \
     ReleaseLimitsRule.cpp \
     mainwindow.cpp \
-    main.cpp
+    main.cpp \
+    SettingsDialog.cpp
 
 FORMS += \
     mainwindow.ui
@@ -16,4 +17,5 @@ OTHER_FILES += \
 
 HEADERS += \
     ReleaseLimitsRule.h \
-    mainwindow.h
+    mainwindow.h \
+    SettingsDialog.h

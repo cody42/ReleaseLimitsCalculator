@@ -1,6 +1,7 @@
 [
 {
-	"name": "F A O",
+	"name": "F A O (World)",
+	"unit": "g/l",
 	"outputs": [
 		{"title": "- FAO", "offset": -1},
 		{"title": "-1/2 FAO", "offset": -0.5},
@@ -19,17 +20,18 @@
 
 },
 {
-	"name": "E P A",
+	"name": "E P A (U.S.)",
+	"unit": "%w/w",
 	"outputs": [
 		{"title": "- EPA", "offset": -1},
 		{"title": "Declared", "offset": 0},
 		{"title": "+ EPA", "offset": 1}
 	],
 	"limits": [
-		{"lte": 10, "percent": 10},
-		{"lte": 200, "percent": 5},
+		{"lte": 1, "percent": 10},
+		{"lte": 20, "percent": 5},
 		{"percent": 3}
 	],
-	"info": "EPA Tolerance (% w/w at 20%2C):\n\t0-1% \t\t%1 10%\n\t>1-20% \t%1 5%\n\t>20% \t\t%1 3%\n"
+	"info": "EPA U.S. Tolerance (% w/w at 20%2C):\n\t0-1% \t\t%1 10%\n\t>1-20% \t%1 5%\n\t>20% \t\t%1 3%\n"
 }
 ]

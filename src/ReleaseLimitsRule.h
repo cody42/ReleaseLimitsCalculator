@@ -1,18 +1,59 @@
 #ifndef _RELEASELIMITSCALCULATOR_RELEASELIMITSRULE_H_
 #define _RELEASELIMITSCALCULATOR_RELEASELIMITSRULE_H_
 
-#include <QtWidgets/qwidget.h>
+#include <qwidget.h>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <qstring.h>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QLabel>
+#include <QLineEdit>
+#include <QLabel>
 #include <qjsonobject.h>
 #include <exception>
 
 #include <vector>
 #include <functional>
+
+enum class Unit : char {
+	PERCENT_WW,
+	g_per_l,
+	INVALID
+};
+
+class ratio {
+public:
+	ratio(double value, Unit u) : value(value), u(u) {};
+	~ratio(void){};
+	
+	double g_l(double density) {
+		if(this->u == Unit::g_per_l) {
+			return value;
+		} else if (u == Unit::PERCENT_WW){
+			return value*10.f*density;
+		}
+		throw;
+	}
+	double w_w(double density) {
+		if(this->u == Unit::g_per_l) {
+			return value/(10.f*density);
+		} else if (u == Unit::PERCENT_WW){
+			return value;
+		}
+		throw;
+	}
+	double as(Unit unit, double density) {
+		if(unit == Unit::g_per_l) {
+			return this->g_l(density);
+		} else if (unit == Unit::PERCENT_WW) {
+			return this->w_w(density);
+		}
+		throw;
+	}
+private:
+	double value;
+	Unit u;
+
+};
 
 class OutputValueWidget :public QWidget {
 	Q_OBJECT
@@ -21,8 +62,9 @@ public:
 	OutputValueWidget(const QString& title, QWidget *parent = 0);
 	virtual ~OutputValueWidget(void);
 
-	void setGL(float value);
-	void setWW(float value);
+	void setGL(double value);
+	void setWW(double value);
+	void updatePrecision(unsigned int precision);
 	void reset();
 private:
 	QGridLayout *mainLayout;
@@ -31,6 +73,10 @@ private:
 	QLabel *labelUnitWW;
 	QLineEdit *editValueGL;
 	QLineEdit *editValueWW;
+
+	std::pair<bool, double> valueGL;
+	std::pair<bool, double> valueWW;
+	unsigned int precision;
 };
 
 class ReleaseLimitsRule : public QGroupBox {
@@ -40,7 +86,7 @@ public:
 	The first parameter is the declared value. If the second value is true, use homogenous ruleset,
 	else use heterogenous rule set
 	*/
-	typedef std::function<std::vector<float>(float, bool)> ToleranceFunction;
+	typedef std::function<std::vector<ratio>(ratio, double, bool)> ToleranceFunction;
 	typedef std::vector<OutputValueWidget*> OutputValueWidgetVector;
 
 	ReleaseLimitsRule(const QString &name, const QString &info, OutputValueWidgetVector *outputWidgets, const ToleranceFunction &f, QWidget *parent = 0);
@@ -52,15 +98,18 @@ public:
 	\param percentWW if true the parameter declared has the unit % w/w, else it has the unit g/l
 	\param homogenous if true calculate for homogenous else for heterogenous
 	*/
-	void update(float declared, float density, bool percentWW, bool homogenous);
+	void update(ratio declared, double density, bool homogenous);
+	void updatePrecision(unsigned int precision);
 	void reset();
-
+	
 	QString getInfo() {return *this->info;}
+	QString getName() {return this->name;}
 protected:
 	QHBoxLayout *mainLayout;
 
 	OutputValueWidgetVector *outputWidgets;
 	ToleranceFunction calculateValue;
+	const QString name;
 	const QString *info;
 };
 
